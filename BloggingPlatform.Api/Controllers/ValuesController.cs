@@ -2,18 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BloggingPlatformLib.DB.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloggingPlatform.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class ValuesController : DBController
     {
+        public ValuesController(BloggingPlatformContext context) : base(context)
+        {
+
+        }
+
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            var authors = Context.Authors.ToList();
+
+            return new string[] { authors.First().Email, authors.First().Username, authors.First().Id.ToString() };
         }
 
         // GET api/values/5

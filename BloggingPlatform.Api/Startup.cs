@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using BloggingPlatformLib.DB.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace BloggingPlatform.Api
 {
@@ -23,6 +25,9 @@ namespace BloggingPlatform.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<BloggingPlatformContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase")));
+
             services.AddMvc();
         }
 
@@ -33,6 +38,9 @@ namespace BloggingPlatform.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseMvc();
         }
